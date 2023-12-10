@@ -7,5 +7,5 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_colwidth', None)
 pd.set_option('display.max_rows', 1000)
 
-rsh_data_adata = data_util.prepare_rsh_data(index_list=['000001', '399106'], api_source='adata')
+# rsh_data_adata = data_util.prepare_rsh_data(index_list=['000001', '399106'], api_source='adata')
 rsh_data_ashare = data_util.prepare_rsh_data(index_list=['000001', '399106'], api_source='ashare')

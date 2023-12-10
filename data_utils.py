@@ -104,7 +104,6 @@ def prepare_rsh_data(index_list=None, keyword='all_index_members', api_source='a
             read_status = False
 
     if refresh_rsh or not read_status:
-        ss_util.print_available_keywords()
         all_universe = ss_util.get_data('all_stocks', refresh=refresh_uni)
         if index_list is None:
             raw_universe = all_universe.copy()
@@ -125,16 +124,18 @@ def prepare_rsh_data(index_list=None, keyword='all_index_members', api_source='a
         res_list = []
         universe_list = rsh_universe['stock_code'].tolist()
         frequency = frequency_mapping[api_source][freq]
-
+        cnt = 1
+        total = len(universe_list)
         for ticker in universe_list:
-            print(ticker)
+            print(ticker, int(cnt/total*100), '%', end='\r')
             if api_source == 'adata':
                 ticker_df = ad_util.stock.market.get_market(stock_code=ticker, k_type=frequency)
             elif api_source == 'ashare':
-                ticker_df = as_util.get_price(int(ticker), count=10000, frequency=frequency)
+                ticker_df = as_util.get_price(ticker, count=10000, frequency=frequency)
             else:
                 raise Exception('Currently only adata and ashare API are supported!')
             res_list.append(ticker_df)
+            cnt += 1
         out = pd.concat(res_list, axis=0, ignore_index=True)
         out.to_pickle(rsh_data_dir, compression='gzip')
 
