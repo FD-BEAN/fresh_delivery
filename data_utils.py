@@ -77,24 +77,13 @@ class StockSummaryWrapper:
 ss_util = StockSummaryWrapper()
 
 
-def prepare_rsh_data(index_list=None, keyword='all_index_members', api_source='ashare', freq='d', refresh_uni=False,
-                     refresh_rsh=False, rsh_data_dir=r'C:\Github\data\stocks\APISOURCEPLACEHOLDER_stock_rsh_data.pkl'):
+def prepare_rsh_data(index_list=None, keyword='all_index_members', frequency=1, refresh_uni=False,
+                     refresh_rsh=False, rsh_data_dir=None):
 
     read_status = False
-    rsh_data_dir = rsh_data_dir.replace('APISOURCEPLACEHOLDER', api_source)
     out = pd.DataFrame()
-    frequency_mapping = {
-        'adata': {
-            'd': 1,
-            'w': 2,
-            'm': 3
-        },
-        'ashare': {
-            'd': '1d',
-            'w': '1w',
-            'm': '1M'
-        }
-    }
+    if rsh_data_dir is None:
+        raise Exception('Target pickle dir cannot be None!')
     if not refresh_rsh:
         try:
             out = pd.read_pickle(rsh_data_dir)
