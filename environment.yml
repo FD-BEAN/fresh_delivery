@@ -12,3 +12,4 @@ dependencies:
     - sspipe==0.1.17
     - adata==1.2.0
     - akshare==1.11.94
+    - scipy==1.11.4

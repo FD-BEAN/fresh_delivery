@@ -1,7 +1,6 @@
 import pandas as pd
 import adata as ad_util
 from sspipe import px, p
-import Ashare.Ashare as as_util
 
 
 class StockSummaryWrapper:
@@ -112,17 +111,11 @@ def prepare_rsh_data(index_list=None, keyword='all_index_members', frequency=1, 
 
         res_list = []
         universe_list = rsh_universe['stock_code'].tolist()
-        frequency = frequency_mapping[api_source][freq]
         cnt = 1
         total = len(universe_list)
         for ticker in universe_list:
             print(ticker, int(cnt/total*100), '%', end='\r')
-            if api_source == 'adata':
-                ticker_df = ad_util.stock.market.get_market(stock_code=ticker, k_type=frequency)
-            elif api_source == 'ashare':
-                ticker_df = as_util.get_price(ticker, count=10000, frequency=frequency)
-            else:
-                raise Exception('Currently only adata and ashare API are supported!')
+            ticker_df = ad_util.stock.market.get_market(stock_code=ticker, k_type=frequency)
             res_list.append(ticker_df)
             cnt += 1
         out = pd.concat(res_list, axis=0, ignore_index=True)
